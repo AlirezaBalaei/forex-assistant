@@ -1,139 +1,142 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Mobile Dark Theme Calculator</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400&display=swap"
+      rel="stylesheet"
+    />
     <style>
-        body {
-            background-color: #121212;
-            color: #ffffff;
-            font-family: 'Roboto Mono', monospace;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: start;
-            height: 100vh;
-            margin: 0;
-            padding: 20px;
-        }
-        .container {
-            width: 100%;
-            max-width: 400px;
-            padding: 20px;
-        }
-        .input-group {
-            margin-bottom: 15px;
-            display: flex;
-            flex-direction: column;
-        }
-        label {
-            font-size: 14px;
-            margin-bottom: 5px;
-        }
-        input {
-            width: 100%;
-            padding: 10px;
-            font-size: 16px;
-            border: none;
-            border-radius: 5px;
-            background-color: #2a2a2a;
-            box-sizing: border-box;
-            color: #ffffff;
-            outline: none;
-            -moz-appearance: textfield;
-        }
-        /* Remove number input spinners */
-        input[type="number"]::-webkit-outer-spin-button,
-        input[type="number"]::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-        button {
-            width: 100%;
-            padding: 15px;
-            font-size: 16px;
-            background-color: #4a90e2;
-            color: #ffffff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        button:hover {
-            background-color: #357ab8;
-        }
-        .result {
-            margin-top: 20px;
-            padding: 10px;
-            background-color: #333;
-            border-radius: 5px;
-            font-size: 16px;
-            display: flex;
-            justify-content: space-between;
-        }
+      body {
+        background-color: #121212;
+        color: #ffffff;
+        font-family: 'Roboto Mono', monospace;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: start;
+        height: 100vh;
+        margin: 0;
+        padding: 20px;
+      }
+      .container {
+        width: 100%;
+        max-width: 400px;
+        padding: 20px;
+      }
+      .input-group {
+        margin-bottom: 15px;
+        display: flex;
+        flex-direction: column;
+      }
+      label {
+        font-size: 14px;
+        margin-bottom: 5px;
+      }
+      input {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        border: none;
+        border-radius: 5px;
+        background-color: #2a2a2a;
+        box-sizing: border-box;
+        color: #ffffff;
+        outline: none;
+        -moz-appearance: textfield;
+      }
+      /* Remove number input spinners */
+      input[type='number']::-webkit-outer-spin-button,
+      input[type='number']::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+      button {
+        width: 100%;
+        padding: 15px;
+        font-size: 16px;
+        background-color: #4a90e2;
+        color: #ffffff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+      button:hover {
+        background-color: #357ab8;
+      }
+      .result {
+        margin-top: 20px;
+        padding: 10px;
+        background-color: #333;
+        border-radius: 5px;
+        font-size: 16px;
+        display: flex;
+        justify-content: space-between;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="container">
-        <div class="input-group">
-            <label for="equity">Equity ($):</label>
-            <input type="number" id="equity" value="6000">
-        </div>
-        <div class="input-group">
-            <label for="risk">Risk (%):</label>
-            <input type="number" id="risk" value="1">
-        </div>
-        <div class="input-group">
-            <label for="stop">Stop ($):</label>
-            <input type="number" id="stop" value="1">
-        </div>
-        <div class="input-group">
-            <label for="contract-size">Contract size:</label>
-            <input type="number" id="contract" value="100">
-        </div>
-        <div class="result">
-            <span>Expected Loss:</span>
-            <span id="loss-result"></span>
-        </div>
-        <div class="result">
-            <span>Lot Size:</span>
-            <span id="lot-result"></span>
-        </div>
+      <div class="input-group">
+        <label for="equity">Equity ($):</label>
+        <input type="number" id="equity" value="6000" />
+      </div>
+      <div class="input-group">
+        <label for="risk">Risk (%):</label>
+        <input type="number" id="risk" value="1" />
+      </div>
+      <div class="input-group">
+        <label for="stop">Stop ($):</label>
+        <input type="number" id="stop" value="1" />
+      </div>
+      <div class="input-group">
+        <label for="contract-size">Contract size:</label>
+        <input type="number" id="contract" value="100" />
+      </div>
+      <div class="result">
+        <span>Expected Loss:</span>
+        <span id="loss-result"></span>
+      </div>
+      <div class="result">
+        <span>Lot Size:</span>
+        <span id="lot-result"></span>
+      </div>
     </div>
-</body>
-<script>
-    window.onload = app
+  </body>
+  <script>
+    window.onload = app;
     async function app() {
-        // Elements
-        let equityInput = document.getElementById("equity")
-        let riskInput = document.getElementById("risk")
-        let stopInput = document.getElementById("stop")
-        let contractInput = document.getElementById("contract")
-        let expectedLossSpan = document.getElementById("loss-result")
-        let expectedLotSpan = document.getElementById("lot-result")
+      // Elements
+      let equityInput = document.getElementById('equity');
+      let riskInput = document.getElementById('risk');
+      let stopInput = document.getElementById('stop');
+      let contractInput = document.getElementById('contract');
+      let expectedLossSpan = document.getElementById('loss-result');
+      let expectedLotSpan = document.getElementById('lot-result');
 
-        // Events
-        equityInput.onchange = handleCalculateClick
-        riskInput.onchange = handleCalculateClick
-        stopInput.onchange = handleCalculateClick
-        contractInput.onchange = handleCalculateClick
-        expectedLossSpan.onchange = handleCalculateClick
-        expectedLotSpan.onchange = handleCalculateClick
-        handleCalculateClick()
+      // Events
+      equityInput.onchange = handleCalculateClick;
+      riskInput.onchange = handleCalculateClick;
+      stopInput.onchange = handleCalculateClick;
+      contractInput.onchange = handleCalculateClick;
+      expectedLossSpan.onchange = handleCalculateClick;
+      expectedLotSpan.onchange = handleCalculateClick;
+      handleCalculateClick();
 
-        /** @param {Event} event */
-        function handleCalculateClick(event) {
-            const equity = +equityInput?.value
-            const risk = +riskInput?.value
-            const stop = +stopInput?.value
-            const contract = +contractInput?.value
-            const loss = equity * (risk / 100)
-            const lot = (loss / stop) / contract
-            expectedLossSpan.innerHTML = loss.toFixed(2)
-            expectedLotSpan.innerHTML = lot.toFixed(2)
-        }
+      /** @param {Event} event */
+      function handleCalculateClick(event) {
+        const equity = +equityInput?.value;
+        const risk = +riskInput?.value;
+        const stop = +stopInput?.value;
+        const contract = +contractInput?.value;
+        const loss = equity * (risk / 100);
+        const lot = loss / stop / contract;
+        expectedLossSpan.innerHTML = loss.toFixed(2);
+        expectedLotSpan.innerHTML = lot.toFixed(2);
+      }
     }
-</script>
+  </script>
 </html>
