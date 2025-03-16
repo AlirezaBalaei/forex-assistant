@@ -30,6 +30,10 @@
         margin-bottom: 15px;
         display: flex;
         flex-direction: column;
+        opacity: 1;
+      }
+      input#contract:read-only {
+        color: #5f5f5f;
       }
       label {
         font-size: 14px;
@@ -76,21 +80,45 @@
         display: flex;
         justify-content: space-between;
       }
+      select {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        border: none;
+        border-radius: 5px;
+        background-color: #2a2a2a;
+        box-sizing: border-box;
+        color: #ffffff;
+        outline: none;
+        cursor: pointer;
+      }
+      #loss-result {
+        color: #ff4c4c;
+      }
     </style>
   </head>
   <body>
     <div class="container">
       <div class="input-group">
         <label for="equity">Equity ($):</label>
-        <input type="number" id="equity" value="6000" />
+        <input type="number" id="equity" value="5000" />
       </div>
       <div class="input-group">
         <label for="risk">Risk (%):</label>
-        <input type="number" id="risk" value="1" />
+        <input type="number" id="risk" value="2" />
       </div>
       <div class="input-group">
         <label for="stop">Stop ($):</label>
         <input type="number" id="stop" value="1" />
+      </div>
+      <div class="input-group">
+        <label for="pair">Select Pair:</label>
+        <select id="pair">
+          <option value="Custom" selected>Custom</option>
+          <option value="XAUUSD" selected>XAUUSD</option>
+          <option value="GBPUSD">GBPUSD</option>
+          <option value="EURUSD">EURUSD</option>
+        </select>
       </div>
       <div class="input-group">
         <label for="contract-size">Contract size:</label>
@@ -113,28 +141,47 @@
       let equityInput = document.getElementById('equity');
       let riskInput = document.getElementById('risk');
       let stopInput = document.getElementById('stop');
+      let pairInput = document.getElementById('pair');
       let contractInput = document.getElementById('contract');
       let expectedLossSpan = document.getElementById('loss-result');
       let expectedLotSpan = document.getElementById('lot-result');
 
       // Events
-      equityInput.onchange = handleCalculateClick;
-      riskInput.onchange = handleCalculateClick;
-      stopInput.onchange = handleCalculateClick;
-      contractInput.onchange = handleCalculateClick;
-      expectedLossSpan.onchange = handleCalculateClick;
-      expectedLotSpan.onchange = handleCalculateClick;
-      handleCalculateClick();
+      equityInput.onchange = handleChange;
+      riskInput.onchange = handleChange;
+      stopInput.onchange = handleChange;
+      equityInput.onchange = handleChange;
+      pairInput.onchange = handleChange;
+      contractInput.onchange = handleChange;
+      expectedLossSpan.onchange = handleChange;
+      expectedLotSpan.onchange = handleChange;
+      window.ontouchend = window.onclick = handleChange;
+      handleChange();
 
       /** @param {Event} event */
-      function handleCalculateClick(event) {
+      function handleChange(event) {
+        const contractPair = {
+          xauusd: 100,
+          gbpusd: 100000,
+          eurusd: 100000,
+        };
         const equity = +equityInput?.value;
         const risk = +riskInput?.value;
         const stop = +stopInput?.value;
-        const contract = +contractInput?.value;
+        const pair = String(pairInput?.value).trim().toLowerCase();
+        let contractSize = 0;
+        if (pair === 'custom') {
+          contractInput.readOnly = false;
+          contractSize = +contractInput?.value;
+        } else {
+          contractInput.readOnly = true;
+          contractSize = contractPair[pair] || 0;
+          contractInput.value = contractSize;
+          contractInput.innerHTML = contractSize;
+        }
         const loss = equity * (risk / 100);
-        const lot = loss / stop / contract;
-        expectedLossSpan.innerHTML = loss.toFixed(2);
+        const lot = loss / stop / contractSize;
+        expectedLossSpan.innerHTML = (-loss).toFixed(2);
         expectedLotSpan.innerHTML = lot.toFixed(2);
       }
     }
