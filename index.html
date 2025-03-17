@@ -80,6 +80,9 @@
         display: flex;
         justify-content: space-between;
       }
+      .hidden {
+        display: none !important;
+      }
       select {
         width: 100%;
         padding: 10px;
@@ -118,10 +121,15 @@
           <option value="XAUUSD" selected>XAUUSD</option>
           <option value="GBPUSD">GBPUSD</option>
           <option value="EURUSD">EURUSD</option>
+          <option value="USDJPY">USDJPY</option>
         </select>
       </div>
+      <div class="input-group hidden" id="usd-price-group">
+        <label for="price">USD Price:</label>
+        <input type="number" id="price" value="148" />
+      </div>
       <div class="input-group">
-        <label for="contract-size">Contract size:</label>
+        <label for="contract">Contract size:</label>
         <input type="number" id="contract" value="100" />
       </div>
       <div class="result">
@@ -143,6 +151,8 @@
       let stopInput = document.getElementById('stop');
       let pairInput = document.getElementById('pair');
       let contractInput = document.getElementById('contract');
+      let priceInput = document.getElementById('price');
+      let usdPriceGroup = document.getElementById('usd-price-group');
       let expectedLossSpan = document.getElementById('loss-result');
       let expectedLotSpan = document.getElementById('lot-result');
 
@@ -153,6 +163,7 @@
       equityInput.onchange = handleChange;
       pairInput.onchange = handleChange;
       contractInput.onchange = handleChange;
+      priceInput.onchange = handleChange;
       expectedLossSpan.onchange = handleChange;
       expectedLotSpan.onchange = handleChange;
       window.ontouchend = window.onclick = handleChange;
@@ -160,27 +171,42 @@
 
       /** @param {Event} event */
       function handleChange(event) {
-        const contractPair = {
-          xauusd: 100,
-          gbpusd: 100000,
-          eurusd: 100000,
+        /** @type {Record<string,{contractSize: number, nonUSD: boolen}>} */
+        const pairDictionary = {
+          xauusd: { contractSize: 100, nonUSD: false },
+          gbpusd: { contractSize: 100000, nonUSD: false },
+          eurusd: { contractSize: 100000, nonUSD: false },
+          usdjpy: { contractSize: 100000, nonUSD: true }
         };
         const equity = +equityInput?.value;
         const risk = +riskInput?.value;
         const stop = +stopInput?.value;
-        const pair = String(pairInput?.value).trim().toLowerCase();
+        const price = +priceInput?.value;
+        const pairKey = String(pairInput?.value).trim().toLowerCase();
+        const pair = pairDictionary[pairKey];
+
+        // Show and hide the price input
+        if (pair?.nonUSD) {
+          usdPriceGroup.classList.remove('hidden');
+        } else {
+          usdPriceGroup.classList.add('hidden');
+        }
+
+        // Calculate contract size
         let contractSize = 0;
-        if (pair === 'custom') {
+        if (pairKey === 'custom') {
           contractInput.readOnly = false;
           contractSize = +contractInput?.value;
         } else {
           contractInput.readOnly = true;
-          contractSize = contractPair[pair] || 0;
+          contractSize = pairDictionary[pairKey]?.contractSize || 0;
           contractInput.value = contractSize;
           contractInput.innerHTML = contractSize;
         }
         const loss = equity * (risk / 100);
-        const lot = loss / stop / contractSize;
+        const lot = loss / stop / (contractSize / (pair?.nonUSD ? price : 1));
+
+        // Show result
         expectedLossSpan.innerHTML = (-loss).toFixed(2);
         expectedLotSpan.innerHTML = lot.toFixed(2);
       }
